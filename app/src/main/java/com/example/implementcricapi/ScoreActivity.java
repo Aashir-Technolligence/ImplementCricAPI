@@ -24,7 +24,7 @@ import org.json.JSONObject;
 public class ScoreActivity extends AppCompatActivity {
     TextView score, over, rr, wicket, team;
     TextView score2, over2, rr2, wicket2, team2;
-    String Url = "https://cricket.sportmonks.com/api/v2.0/fixtures/14988?api_token=9ivr14EK7LFO5sg5SSQLg7Fby8NHWL8vJ8MkzsHgm0Y5WvFblbMubiYRlVZf&include=scoreboards";
+    String Url = "https://cricket.sportmonks.com/api/v2.0/fixtures/14985?api_token=9ivr14EK7LFO5sg5SSQLg7Fby8NHWL8vJ8MkzsHgm0Y5WvFblbMubiYRlVZf&include=scoreboards";
     DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -50,6 +50,11 @@ public class ScoreActivity extends AppCompatActivity {
                     //JSONArray jsonArray = new JSONObject(response).getJSONArray("response");
                     JSONObject jObject = new JSONObject(response);
                     JSONObject responseObject = jObject.getJSONObject("data");
+
+                    Integer tossWinTeam = responseObject.getInt("toss_won_team_id");
+                    String elected = responseObject.getString("elected");
+                    dref.child("LiveScore").child("tosswin").setValue(tossWinTeam);
+                    dref.child("LiveScore").child("elected").setValue(elected);
                     // JSONObject rankObject = responseObject.getJSONObject("scoreboards");
                     // JSONObject batObject = responseObject.getJSONObject("scoreboards");
                     JSONArray odisObject = new JSONObject(String.valueOf(responseObject)).getJSONArray("scoreboards");
@@ -71,11 +76,12 @@ public class ScoreActivity extends AppCompatActivity {
                                     rr.setText(String.valueOf(s / o));
                                 else
                                     rr.setText("0");
-                                if (teamid.equals("54")) {
+                                if (teamid.equals("11")) {
                                     team.setText("Islamabad United");
                                     dref.child("LiveScore").child("Islamabad United").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Islamabad United").child("wicket").setValue(wickett);
                                     dref.child("LiveScore").child("Islamabad United").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Islamabad United").child("team").setValue("Islamabad United");
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Islamabad United").child("rr").setValue(String.valueOf(s / o));
                                     else
@@ -86,6 +92,7 @@ public class ScoreActivity extends AppCompatActivity {
                                     dref.child("LiveScore").child("Karachi Kings").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Karachi Kings").child("wicket").setValue(wickett);
                                     dref.child("LiveScore").child("Karachi Kings").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Karachi Kings").child("team").setValue("Karachi Kings");
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Karachi Kings").child("rr").setValue(String.valueOf(s / o));
                                     else
@@ -97,6 +104,7 @@ public class ScoreActivity extends AppCompatActivity {
                                     dref.child("LiveScore").child("Lahore Qalandars").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Lahore Qalandars").child("wicket").setValue(wickett);
                                     dref.child("LiveScore").child("Lahore Qalandars").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Lahore Qalandars").child("team").setValue("Lahore Qalandars");
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Lahore Qalandars").child("rr").setValue(String.valueOf(s / o));
                                     else
@@ -108,6 +116,7 @@ public class ScoreActivity extends AppCompatActivity {
                                     dref.child("LiveScore").child("Multan Sultan").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Multan Sultan").child("wicket").setValue(wickett);
                                     dref.child("LiveScore").child("Multan Sultan").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Multan Sultan").child("team").setValue("Multan Sultan");
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Multan Sultan").child("rr").setValue(String.valueOf(s / o));
                                     else
@@ -119,17 +128,19 @@ public class ScoreActivity extends AppCompatActivity {
                                     dref.child("LiveScore").child("Peshawar Zalmi").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Peshawar Zalmi").child("wicket").setValue(wickett);
                                     dref.child("LiveScore").child("Peshawar Zalmi").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Peshawar Zalmi").child("team").setValue("Peshawar Zalmi");
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Peshawar Zalmi").child("rr").setValue(String.valueOf(s / o));
                                     else
                                         dref.child("LiveScore").child("Peshawar Zalmi").child("rr").setValue(String.valueOf(s / o));
 
                                 }
-                                if (teamid.equals("16")) {
+                                if (teamid.equals("51")) {
                                     team.setText("Quetta Gladiators");
                                     dref.child("LiveScore").child("Quetta Gladiators").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Quetta Gladiators").child("wicket").setValue(wickett);
                                     dref.child("LiveScore").child("Quetta Gladiators").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Quetta Gladiators").child("team").setValue("Quetta Gladiators");
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Quetta Gladiators").child("rr").setValue(String.valueOf(s / o));
                                     else
@@ -147,21 +158,23 @@ public class ScoreActivity extends AppCompatActivity {
                                     rr2.setText(String.valueOf(s / o));
                                 else
                                     rr2.setText("0");
-                                if (teamid.equals("11")) {
+                                if (teamid.equals("53")) {
                                     team2.setText("Islamabad United");
                                     dref.child("LiveScore").child("Islamabad United").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Islamabad United").child("wicket").setValue(wickett);
                                     dref.child("LiveScore").child("Islamabad United").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Islamabad United").child("team").setValue("Islamabad United");
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Islamabad United").child("rr").setValue(String.valueOf(s / o));
                                     else
                                         dref.child("LiveScore").child("Islamabad United").child("rr").setValue("0");
                                 }
-                                if (teamid.equals("49")) {
+                                if (teamid.equals("12")) {
                                     team2.setText("Karachi Kings");
                                     dref.child("LiveScore").child("Karachi Kings").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Karachi Kings").child("wicket").setValue(wickett);
                                     dref.child("LiveScore").child("Karachi Kings").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Karachi Kings").child("team").setValue("Karachi Kings");
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Karachi Kings").child("rr").setValue(String.valueOf(s / o));
                                     else
@@ -173,6 +186,7 @@ public class ScoreActivity extends AppCompatActivity {
                                     dref.child("LiveScore").child("Lahore Qalandars").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Lahore Qalandars").child("wicket").setValue(wickett);
                                     dref.child("LiveScore").child("Lahore Qalandars").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Lahore Qalandars").child("team").setValue("Lahore Qalandars");
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Lahore Qalandars").child("rr").setValue(String.valueOf(s / o));
                                     else
@@ -184,6 +198,7 @@ public class ScoreActivity extends AppCompatActivity {
                                     dref.child("LiveScore").child("Multan Sultan").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Multan Sultan").child("wicket").setValue(wickett);
                                     dref.child("LiveScore").child("Multan Sultan").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Multan Sultan").child("team").setValue("Multan Sultan");
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Multan Sultan").child("rr").setValue(String.valueOf(s / o));
                                     else
@@ -195,6 +210,7 @@ public class ScoreActivity extends AppCompatActivity {
                                     dref.child("LiveScore").child("Peshawar Zalmi").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Peshawar Zalmi").child("wicket").setValue(wickett);
                                     dref.child("LiveScore").child("Peshawar Zalmi").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Peshawar Zalmi").child("team").setValue("Peshawar Zalmi");
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Peshawar Zalmi").child("rr").setValue(String.valueOf(s / o));
                                     else
@@ -206,6 +222,7 @@ public class ScoreActivity extends AppCompatActivity {
                                     dref.child("LiveScore").child("Quetta Gladiators").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Quetta Gladiators").child("wicket").setValue(wickett);
                                     dref.child("LiveScore").child("Quetta Gladiators").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Quetta Gladiators").child("team").setValue("Quetta Gladiators");
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Quetta Gladiators").child("rr").setValue(String.valueOf(s / o));
                                     else
