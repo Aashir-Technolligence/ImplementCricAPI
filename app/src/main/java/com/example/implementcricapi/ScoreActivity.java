@@ -24,7 +24,7 @@ import org.json.JSONObject;
 public class ScoreActivity extends AppCompatActivity {
     TextView score, over, rr, wicket, team;
     TextView score2, over2, rr2, wicket2, team2;
-    String Url = "https://cricket.sportmonks.com/api/v2.0/fixtures/14985?api_token=9ivr14EK7LFO5sg5SSQLg7Fby8NHWL8vJ8MkzsHgm0Y5WvFblbMubiYRlVZf&include=scoreboards";
+    String Url = "https://cricket.sportmonks.com/api/v2.0/fixtures/14985?api_token=9ivr14EK7LFO5sg5SSQLg7Fby8NHWL8vJ8MkzsHgm0Y5WvFblbMubiYRlVZf&include=scoreboards,localTeam,visitorTeam,batting,bowling,balls,lineup";
     DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -135,7 +135,7 @@ public class ScoreActivity extends AppCompatActivity {
                                         dref.child("LiveScore").child("Peshawar Zalmi").child("rr").setValue(String.valueOf(s / o));
 
                                 }
-                                if (teamid.equals("51")) {
+                                if (teamid.equals("53")) {
                                     team.setText("Quetta Gladiators");
                                     dref.child("LiveScore").child("Quetta Gladiators").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Quetta Gladiators").child("wicket").setValue(wickett);
@@ -158,7 +158,7 @@ public class ScoreActivity extends AppCompatActivity {
                                     rr2.setText(String.valueOf(s / o));
                                 else
                                     rr2.setText("0");
-                                if (teamid.equals("53")) {
+                                if (teamid.equals("51")) {
                                     team2.setText("Islamabad United");
                                     dref.child("LiveScore").child("Islamabad United").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Islamabad United").child("wicket").setValue(wickett);
