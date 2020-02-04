@@ -70,7 +70,7 @@ public class ScoreActivity extends AppCompatActivity {
                                             if(!id.equals(null)){
                                                 dref.child("FinishMatches").child(id).child("note").setValue(matchNote);
                                                 dref.child("FinishMatches").child(id).child("id").setValue(id);
-
+//
                                             }
                                         }
                                     }
