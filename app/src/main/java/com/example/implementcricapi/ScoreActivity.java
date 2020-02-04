@@ -132,7 +132,7 @@ public class ScoreActivity extends AppCompatActivity {
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Peshawar Zalmi").child("rr").setValue(String.valueOf(s / o));
                                     else
-                                        dref.child("LiveScore").child("Peshawar Zalmi").child("rr").setValue(String.valueOf(s / o));
+                                        dref.child("LiveScore").child("Peshawar Zalmi").child("rr").setValue("0");
 
                                 }
                                 if (teamid.equals("53")) {
@@ -214,7 +214,7 @@ public class ScoreActivity extends AppCompatActivity {
                                     if (!String.valueOf(s / o).equals("NaN"))
                                         dref.child("LiveScore").child("Peshawar Zalmi").child("rr").setValue(String.valueOf(s / o));
                                     else
-                                        dref.child("LiveScore").child("Peshawar Zalmi").child("rr").setValue(String.valueOf(s / o));
+                                        dref.child("LiveScore").child("Peshawar Zalmi").child("rr").setValue("0");
 
                                 }
                                 if (teamid.equals("16")) {
