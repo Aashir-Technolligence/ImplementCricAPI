@@ -28,7 +28,7 @@ import org.json.JSONObject;
 public class ScoreActivity extends AppCompatActivity {
     TextView score, over, rr, wicket, team;
     TextView score2, over2, rr2, wicket2, team2;
-    String Url = "https://cricket.sportmonks.com/api/v2.0/fixtures/15054?api_token=9ivr14EK7LFO5sg5SSQLg7Fby8NHWL8vJ8MkzsHgm0Y5WvFblbMubiYRlVZf&include=scoreboards,localTeam,visitorTeam,batting,bowling,balls,lineup";
+    String Url = "https://cricket.sportmonks.com/api/v2.0/fixtures/15081?api_token=9ivr14EK7LFO5sg5SSQLg7Fby8NHWL8vJ8MkzsHgm0Y5WvFblbMubiYRlVZf&include=scoreboards,localTeam,visitorTeam,batting,bowling,balls,lineup";
     DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -106,7 +106,7 @@ public class ScoreActivity extends AppCompatActivity {
                                     rr2.setText(String.valueOf(s / o));
                                 else
                                     rr2.setText("0");
-                                if (teamid.equals("47")) {
+                                if (teamid.equals("51")) {
                                     team2.setText("Islamabad United");
                                     dref.child("LiveScore").child("Islamabad United").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Islamabad United").child("wicket").setValue(wickett);
