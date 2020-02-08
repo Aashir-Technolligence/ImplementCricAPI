@@ -45,7 +45,6 @@ public class ScoreActivity extends AppCompatActivity {
         rr2 = findViewById(R.id.txtRR2);
         wicket2 = findViewById(R.id.txtWicket2);
         team2 = findViewById(R.id.txtTeam2);
-
         StringRequest stringRequest = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -59,17 +58,17 @@ public class ScoreActivity extends AppCompatActivity {
                     String elected = responseObject.getString("elected");
 
                     String matchStatus = responseObject.getString("status");
-                    if(matchStatus.equals("Finished")){
+                    if (matchStatus.equals("Finished")) {
                         final String matchNote = responseObject.getString("note");
                         dref.child("Schedule").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if(dataSnapshot.exists()){
-                                    for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
-                                        if(dataSnapshot1.child("status").getValue().toString().equals("Live")){
-                                            String id=dataSnapshot1.child("id").getValue().toString();
-                                            String sid=dataSnapshot1.child("sid").getValue().toString();
-                                            if(!id.equals(null)){
+                                if (dataSnapshot.exists()) {
+                                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                        if (dataSnapshot1.child("status").getValue().toString().equals("Live")) {
+                                            String id = dataSnapshot1.child("id").getValue().toString();
+                                            String sid = dataSnapshot1.child("sid").getValue().toString();
+                                            if (!id.equals(null)) {
                                                 dref.child("FinishMatches").child(sid).child("note").setValue(matchNote);
                                                 dref.child("FinishMatches").child(sid).child("id").setValue(sid);
                                             }
@@ -222,34 +221,29 @@ public class ScoreActivity extends AppCompatActivity {
             String batsman1 = ballsObject.getJSONObject(ballsObject.length() - 1).getString("batsman_one_on_creeze_id");
             String batsman2 = ballsObject.getJSONObject(ballsObject.length() - 1).getString("batsman_two_on_creeze_id");
             String teamId = ballsObject.getJSONObject(ballsObject.length() - 1).getString("team_id");
-            String teamname="";
-            if(teamId.equals("47")){
+            String teamname = "";
+            if (teamId.equals("51")) {
                 teamname = "Islamabad United";
-            }
-            else if(teamId.equals("12")){
+            } else if (teamId.equals("12")) {
                 teamname = "Karachi Kings";
-            }
-            else if(teamId.equals("13")){
+            } else if (teamId.equals("13")) {
                 teamname = "Lahore Qalandars";
-            }
-            else if(teamId.equals("14")){
+            } else if (teamId.equals("14")) {
                 teamname = "Multan Sultan";
-            }
-            else if(teamId.equals("15")){
+            } else if (teamId.equals("15")) {
                 teamname = "Peshawar Zalmi";
-            }
-            else if(teamId.equals("16")){
+            } else if (teamId.equals("54")) {
                 teamname = "Quetta Gladiators";
             }
             //JSONObject battingObject=dataObject.getJSONObject("batting");
             JSONArray playerArray = new JSONObject(String.valueOf(dataObject)).getJSONArray("batting");
             for (int j = 0; j < playerArray.length(); j++) {
-                String activePlayerId="";
+                String activePlayerId = "";
                 String playerId = playerArray.getJSONObject(j).getString("player_id");
-                boolean playerStatus=playerArray.getJSONObject(j).getBoolean("active");
-                if(playerStatus==true){
-                     activePlayerId=playerArray.getJSONObject(j).getString("player_id");
-                     getActivePlayerData(activePlayerId);
+                boolean playerStatus = playerArray.getJSONObject(j).getBoolean("active");
+                if (playerStatus == true) {
+                    activePlayerId = playerArray.getJSONObject(j).getString("player_id");
+                    getActivePlayerData(activePlayerId);
                 }
                 if (playerId.equals(batsman1)) {
                     String score = playerArray.getJSONObject(j).getString("score");
@@ -263,7 +257,7 @@ public class ScoreActivity extends AppCompatActivity {
                     dref.child("LiveScore").child("batsmanScore").child("1").child("fours").setValue(fours);
                     dref.child("LiveScore").child("batsmanScore").child("1").child("sixs").setValue(sixs);
                     dref.child("LiveScore").child("batsmanScore").child("1").child("rr").setValue(rr);
-                    getPlayerData(batsman1, 1 , teamname , score , balls, fours, sixs,rr);
+                    getPlayerData(batsman1, 1, teamname, score, balls, fours, sixs, rr);
                 }
                 if (playerId.equals(batsman2)) {
                     String score = playerArray.getJSONObject(j).getString("score");
@@ -277,43 +271,38 @@ public class ScoreActivity extends AppCompatActivity {
                     dref.child("LiveScore").child("batsmanScore").child("2").child("sixs").setValue(sixs);
                     dref.child("LiveScore").child("batsmanScore").child("2").child("rr").setValue(rr);
 
-                    getPlayerData(batsman2, 2, teamname , score , balls, fours, sixs,rr);
+                    getPlayerData(batsman2, 2, teamname, score, balls, fours, sixs, rr);
                 }
             }
             JSONObject bowlerObject = ballsObject.getJSONObject(ballsObject.length() - 1);
             JSONObject nameObject = bowlerObject.getJSONObject("bowler");
             String bowlerName = nameObject.getString("fullname");
-            String bowlerId =  nameObject.getString("id");
+            String bowlerId = nameObject.getString("id");
             for (int i = 0; i < bowlerDataArray.length(); i++) {
                 try {
                     String bowler_player_id = bowlerDataArray.getJSONObject(i).getString("player_id");
-                    String bowler_team_id =bowlerDataArray.getJSONObject(i).getString("team_id");
-                    String bowler_score =bowlerDataArray.getJSONObject(i).getString("runs");
-                    String bowler_overs =bowlerDataArray.getJSONObject(i).getString("overs");
-                    String bowler_medians =bowlerDataArray.getJSONObject(i).getString("medians");
-                    String bowler_wickets =bowlerDataArray.getJSONObject(i).getString("wickets");
-                    String bowler_rr =bowlerDataArray.getJSONObject(i).getString("rate");
+                    String bowler_team_id = bowlerDataArray.getJSONObject(i).getString("team_id");
+                    String bowler_score = bowlerDataArray.getJSONObject(i).getString("runs");
+                    String bowler_overs = bowlerDataArray.getJSONObject(i).getString("overs");
+                    String bowler_medians = bowlerDataArray.getJSONObject(i).getString("medians");
+                    String bowler_wickets = bowlerDataArray.getJSONObject(i).getString("wickets");
+                    String bowler_rr = bowlerDataArray.getJSONObject(i).getString("rate");
 
-                    String bowlerTeamName="";
-                    if(bowler_team_id.equals("47")){
+                    String bowlerTeamName = "";
+                    if (bowler_team_id.equals("51")) {
                         bowlerTeamName = "Islamabad United";
-                    }
-                    else if(bowler_team_id.equals("12")){
+                    } else if (bowler_team_id.equals("12")) {
                         bowlerTeamName = "Karachi Kings";
-                    }
-                    else if(bowler_team_id.equals("13")){
+                    } else if (bowler_team_id.equals("13")) {
                         bowlerTeamName = "Lahore Qalandars";
-                    }
-                    else if(bowler_team_id.equals("14")){
+                    } else if (bowler_team_id.equals("14")) {
                         bowlerTeamName = "Multan Sultan";
-                    }
-                    else if(bowler_team_id.equals("15")){
+                    } else if (bowler_team_id.equals("15")) {
                         bowlerTeamName = "Peshawar Zalmi";
-                    }
-                    else if(bowler_team_id.equals("54")){
+                    } else if (bowler_team_id.equals("54")) {
                         bowlerTeamName = "Quetta Gladiators";
                     }
-                    if(bowler_player_id.equals(bowlerId)){
+                    if (bowler_player_id.equals(bowlerId)) {
                         dref.child("LiveScore").child("summary").child(bowlerTeamName).child("bowling").child(bowlerName).child("name").setValue(bowlerName);
                         dref.child("LiveScore").child("summary").child(bowlerTeamName).child("bowling").child(bowlerName).child("score").setValue(bowler_score);
                         dref.child("LiveScore").child("summary").child(bowlerTeamName).child("bowling").child(bowlerName).child("overs").setValue(bowler_overs);
@@ -355,11 +344,11 @@ public class ScoreActivity extends AppCompatActivity {
                         name = "4 ";
                     } else if (name.contains("SIX")) {
                         name = "6 ";
-                    }else if(name.contains("Leg Bye")){
-                        name= name.replace(" Leg Bye", "L ");
-                    }else if(name.contains("Bye")){
-                        name= name.replace(" Bye", "B ");
-                    }else if (name.contains("No Ball")) {
+                    } else if (name.contains("Leg Bye")) {
+                        name = name.replace(" Leg Bye", "L ");
+                    } else if (name.contains("Bye")) {
+                        name = name.replace(" Bye", "B ");
+                    } else if (name.contains("No Ball")) {
                         name = "nb ";
                     }
                     dref.child("LiveScore").child("recent").child(String.valueOf(count)).setValue(name);
@@ -423,66 +412,59 @@ public class ScoreActivity extends AppCompatActivity {
 //
 //    }
 
-    private void getPlayerData(String id, final int x, final String team , final String score , final String balls, final String fours, final String sixs, final String rr) {
-        String playerUrl = "https://cricket.sportmonks.com/api/v2.0/players/" + id + "?api_token=9ivr14EK7LFO5sg5SSQLg7Fby8NHWL8vJ8MkzsHgm0Y5WvFblbMubiYRlVZf";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, playerUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONObject responseObject = null;
-                try {
-                    responseObject = new JSONObject(response);
-                    JSONObject dataObject = responseObject.getJSONObject("data");
-                    String playerName = dataObject.getString("fullname");
-                    dref.child("LiveScore").child("batsmanScore").child(String.valueOf(x)).child("name").setValue(playerName);
-
-                    dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("name").setValue(playerName);
-                    dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("score").setValue(score);
-                    dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("balls").setValue(balls);
-                    dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("fours").setValue(fours);
-                    dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("sixs").setValue(sixs);
-                    dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("rr").setValue(rr);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_LONG).show();
+    private void getPlayerData(final String id, final int x, final String team, final String score, final String balls, final String fours, final String sixs, final String rr) {
+        try {
+            dref.child("ApiPlayersData").child(id).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String playerName = dataSnapshot.child("fullname").getValue().toString();
+                        dref.child("LiveScore").child("batsmanScore").child(String.valueOf(x)).child("name").setValue(playerName);
+                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("name").setValue(playerName);
+                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("score").setValue(score);
+                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("balls").setValue(balls);
+                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("fours").setValue(fours);
+                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("sixs").setValue(sixs);
+                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("rr").setValue(rr);
+                    }
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
 
-            }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
 
     }
+
     private void getActivePlayerData(String id) {
-        String playerUrl = "https://cricket.sportmonks.com/api/v2.0/players/" + id + "?api_token=9ivr14EK7LFO5sg5SSQLg7Fby8NHWL8vJ8MkzsHgm0Y5WvFblbMubiYRlVZf";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, playerUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONObject responseObject = null;
-                try {
-                    responseObject = new JSONObject(response);
-                    JSONObject dataObject = responseObject.getJSONObject("data");
-                    String playerName = dataObject.getString("fullname");
-                    dref.child("LiveScore").child("currentBatting").setValue(playerName);
+        try {
+            dref.child("ApiPlayersData").child(id).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String playerName = dataSnapshot.child("fullname").getValue().toString();
+                        dref.child("LiveScore").child("currentBatting").setValue(playerName);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
 
-            }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
 
     }
-
-
 }
