@@ -313,7 +313,7 @@ public class ScoreActivity extends AppCompatActivity {
             public void run() {
                 recreate();
             }
-        }, 2000);
+        }, 3500);
 
 
     }
