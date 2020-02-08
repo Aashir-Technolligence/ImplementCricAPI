@@ -77,8 +77,8 @@ public class ScoreActivity extends AppCompatActivity {
 
                             }
                         });
+                    } catch (Exception e) {
                     }
-                    catch (Exception e){}
                     Integer tossWinTeam = responseObject.getInt("toss_won_team_id");
                     String elected = responseObject.getString("elected");
                     try {
@@ -109,8 +109,8 @@ public class ScoreActivity extends AppCompatActivity {
                                 }
                             });
                         }
+                    } catch (Exception e) {
                     }
-                    catch (Exception e){}
                     dref.child("LiveScore").child("tosswin").setValue(tossWinTeam);
                     dref.child("LiveScore").child("elected").setValue(elected);
                     // JSONObject rankObject = responseObject.getJSONObject("scoreboards");
@@ -313,7 +313,7 @@ public class ScoreActivity extends AppCompatActivity {
             public void run() {
                 recreate();
             }
-        }, 3500);
+        }, 2500);
 
 
     }
@@ -388,46 +388,8 @@ public class ScoreActivity extends AppCompatActivity {
             JSONObject nameObject = bowlerObject.getJSONObject("bowler");
             String bowlerName = nameObject.getString("fullname");
             String bowlerId = nameObject.getString("id");
-            for (int i = 0; i < bowlerDataArray.length(); i++) {
-                try {
-                    String bowler_player_id = bowlerDataArray.getJSONObject(i).getString("player_id");
-                    String bowler_team_id = bowlerDataArray.getJSONObject(i).getString("team_id");
-                    String bowler_score = bowlerDataArray.getJSONObject(i).getString("runs");
-                    String bowler_overs = bowlerDataArray.getJSONObject(i).getString("overs");
-                    String bowler_medians = bowlerDataArray.getJSONObject(i).getString("medians");
-                    String bowler_wickets = bowlerDataArray.getJSONObject(i).getString("wickets");
-                    String bowler_rr = bowlerDataArray.getJSONObject(i).getString("rate");
 
-                    String bowlerTeamName = "";
-                    if (bowler_team_id.equals("51")) {
-                        bowlerTeamName = "Islamabad United";
-                    } else if (bowler_team_id.equals("12")) {
-                        bowlerTeamName = "Karachi Kings";
-                    } else if (bowler_team_id.equals("13")) {
-                        bowlerTeamName = "Lahore Qalandars";
-                    } else if (bowler_team_id.equals("14")) {
-                        bowlerTeamName = "Multan Sultan";
-                    } else if (bowler_team_id.equals("15")) {
-                        bowlerTeamName = "Peshawar Zalmi";
-                    } else if (bowler_team_id.equals("53")) {
-                        bowlerTeamName = "Quetta Gladiators";
-                    }
-                    if (bowler_player_id.equals(bowlerId)) {
-                        dref.child("LiveScore").child("summary").child(bowlerTeamName).child("bowling").child(bowlerName).child("name").setValue(bowlerName);
-                        dref.child("LiveScore").child("summary").child(bowlerTeamName).child("bowling").child(bowlerName).child("score").setValue(bowler_score);
-                        dref.child("LiveScore").child("summary").child(bowlerTeamName).child("bowling").child(bowlerName).child("overs").setValue(bowler_overs);
-                        dref.child("LiveScore").child("summary").child(bowlerTeamName).child("bowling").child(bowlerName).child("medians").setValue(bowler_medians);
-                        dref.child("LiveScore").child("summary").child(bowlerTeamName).child("bowling").child(bowlerName).child("econ").setValue(bowler_rr);
-                        dref.child("LiveScore").child("summary").child(bowlerTeamName).child("bowling").child(bowlerName).child("wickets").setValue(bowler_wickets);
-
-                    }
-
-
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-
-            }
+            summary(dataObject, nameObject);
 
 
             dref.child("LiveScore").child("bowler").setValue(bowlerName);
@@ -483,6 +445,121 @@ public class ScoreActivity extends AppCompatActivity {
 
     }
 
+    private void summary(JSONObject object, JSONObject nameObject) {
+        try {
+            JSONArray bowlerDaArray = new JSONObject(String.valueOf(object)).getJSONArray("bowling");
+            for (int i = 0; i < bowlerDaArray.length(); i++) {
+                try {
+                    String bowler_player_id = bowlerDaArray.getJSONObject(i).getString("player_id");
+                    String bowler_team_id = bowlerDaArray.getJSONObject(i).getString("team_id");
+                    final String bowler_score = bowlerDaArray.getJSONObject(i).getString("runs");
+                    final String bowler_overs = bowlerDaArray.getJSONObject(i).getString("overs");
+                    final String bowler_medians = bowlerDaArray.getJSONObject(i).getString("medians");
+                    final String bowler_wickets = bowlerDaArray.getJSONObject(i).getString("wickets");
+                    final String bowler_rr = bowlerDaArray.getJSONObject(i).getString("rate");
+
+                    String bowlerTeamName = "";
+                    if (bowler_team_id.equals("51")) {
+                        bowlerTeamName = "Islamabad United";
+                    } else if (bowler_team_id.equals("12")) {
+                        bowlerTeamName = "Karachi Kings";
+                    } else if (bowler_team_id.equals("13")) {
+                        bowlerTeamName = "Lahore Qalandars";
+                    } else if (bowler_team_id.equals("14")) {
+                        bowlerTeamName = "Multan Sultan";
+                    } else if (bowler_team_id.equals("15")) {
+                        bowlerTeamName = "Peshawar Zalmi";
+                    } else if (bowler_team_id.equals("53")) {
+                        bowlerTeamName = "Quetta Gladiators";
+                    }
+                    final String finalBowlerTeamName = bowlerTeamName;
+                    dref.child("ApiPlayersData").child(bowler_player_id).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                String playerName = dataSnapshot.child("fullname").getValue().toString();
+                                dref.child("LiveScore").child("summary").child(finalBowlerTeamName).child("bowling").child(playerName).child("name").setValue(playerName);
+                                dref.child("LiveScore").child("summary").child(finalBowlerTeamName).child("bowling").child(playerName).child("score").setValue(bowler_score);
+                                dref.child("LiveScore").child("summary").child(finalBowlerTeamName).child("bowling").child(playerName).child("overs").setValue(bowler_overs);
+                                dref.child("LiveScore").child("summary").child(finalBowlerTeamName).child("bowling").child(playerName).child("medians").setValue(bowler_medians);
+                                dref.child("LiveScore").child("summary").child(finalBowlerTeamName).child("bowling").child(playerName).child("econ").setValue(bowler_rr);
+                                dref.child("LiveScore").child("summary").child(finalBowlerTeamName).child("bowling").child(playerName).child("wickets").setValue(bowler_wickets);
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        } catch (Exception e) {
+        }
+        try {
+            JSONArray battingDaArray = new JSONObject(String.valueOf(object)).getJSONArray("batting");
+            for (int i = 0; i < battingDaArray.length(); i++) {
+                try {
+                    String bowler_player_id = battingDaArray.getJSONObject(i).getString("player_id");
+                    String bowler_team_id = battingDaArray.getJSONObject(i).getString("team_id");
+                    final String score = battingDaArray.getJSONObject(i).getString("score");
+                    final String balls = battingDaArray.getJSONObject(i).getString("ball");
+                    final String fours = battingDaArray.getJSONObject(i).getString("four_x");
+                    final String sixs = battingDaArray.getJSONObject(i).getString("six_x");
+                    final String batsman_rr = battingDaArray.getJSONObject(i).getString("rate");
+
+                    String batsmanTeamName = "";
+                    if (bowler_team_id.equals("51")) {
+                        batsmanTeamName = "Islamabad United";
+                    } else if (bowler_team_id.equals("12")) {
+                        batsmanTeamName = "Karachi Kings";
+                    } else if (bowler_team_id.equals("13")) {
+                        batsmanTeamName = "Lahore Qalandars";
+                    } else if (bowler_team_id.equals("14")) {
+                        batsmanTeamName = "Multan Sultan";
+                    } else if (bowler_team_id.equals("15")) {
+                        batsmanTeamName = "Peshawar Zalmi";
+                    } else if (bowler_team_id.equals("53")) {
+                        batsmanTeamName = "Quetta Gladiators";
+                    }
+                    final String finalBatsmanTeamName = batsmanTeamName;
+                    dref.child("ApiPlayersData").child(bowler_player_id).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                String playerName = dataSnapshot.child("fullname").getValue().toString();
+                                dref.child("LiveScore").child("summary").child(finalBatsmanTeamName).child("batting").child(playerName).child("name").setValue(playerName);
+                                dref.child("LiveScore").child("summary").child(finalBatsmanTeamName).child("batting").child(playerName).child("score").setValue(score);
+                                dref.child("LiveScore").child("summary").child(finalBatsmanTeamName).child("batting").child(playerName).child("balls").setValue(balls);
+                                dref.child("LiveScore").child("summary").child(finalBatsmanTeamName).child("batting").child(playerName).child("fours").setValue(fours);
+                                dref.child("LiveScore").child("summary").child(finalBatsmanTeamName).child("batting").child(playerName).child("sixs").setValue(sixs);
+                                dref.child("LiveScore").child("summary").child(finalBatsmanTeamName).child("batting").child(playerName).child("rr").setValue(batsman_rr);
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        } catch (Exception e) {
+        }
+    }
+
     private void getPlayerData(final String id, final int x, final String team, final String score, final String balls, final String fours, final String sixs, final String rr) {
         try {
             dref.child("ApiPlayersData").child(id).addValueEventListener(new ValueEventListener() {
@@ -490,13 +567,14 @@ public class ScoreActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         String playerName = dataSnapshot.child("fullname").getValue().toString();
+
                         dref.child("LiveScore").child("batsmanScore").child(String.valueOf(x)).child("name").setValue(playerName);
-                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("name").setValue(playerName);
-                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("score").setValue(score);
-                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("balls").setValue(balls);
-                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("fours").setValue(fours);
-                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("sixs").setValue(sixs);
-                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("rr").setValue(rr);
+//                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("name").setValue(playerName);
+//                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("score").setValue(score);
+//                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("balls").setValue(balls);
+//                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("fours").setValue(fours);
+//                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("sixs").setValue(sixs);
+//                        dref.child("LiveScore").child("summary").child(team).child("batting").child(playerName).child("rr").setValue(rr);
                     }
                 }
 
