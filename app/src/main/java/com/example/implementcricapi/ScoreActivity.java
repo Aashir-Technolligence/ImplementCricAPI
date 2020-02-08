@@ -72,6 +72,7 @@ public class ScoreActivity extends AppCompatActivity {
                                             if (!id.equals(null)) {
                                                 dref.child("FinishMatches").child(sid).child("note").setValue(matchNote);
                                                 dref.child("FinishMatches").child(sid).child("id").setValue(sid);
+                                                dref.child("Schedule").child(id).child("note").setValue(matchNote);
                                             }
                                         }
                                     }
@@ -286,7 +287,7 @@ public class ScoreActivity extends AppCompatActivity {
             public void run() {
                 recreate();
             }
-        }, 7500);
+        }, 4500);
 
 
     }
