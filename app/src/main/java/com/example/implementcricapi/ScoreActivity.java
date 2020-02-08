@@ -45,6 +45,7 @@ public class ScoreActivity extends AppCompatActivity {
         rr2 = findViewById(R.id.txtRR2);
         wicket2 = findViewById(R.id.txtWicket2);
         team2 = findViewById(R.id.txtTeam2);
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -53,13 +54,8 @@ public class ScoreActivity extends AppCompatActivity {
                     //JSONArray jsonArray = new JSONObject(response).getJSONArray("response");
                     JSONObject jObject = new JSONObject(response);
                     JSONObject responseObject = jObject.getJSONObject("data");
-
-                    Integer tossWinTeam = responseObject.getInt("toss_won_team_id");
-                    String elected = responseObject.getString("elected");
-
-                    String matchStatus = responseObject.getString("status");
-                    if (matchStatus.equals("Finished")) {
-                        final String matchNote = responseObject.getString("note");
+                    try {
+                        final String matchnn = responseObject.getString("note");
                         dref.child("Schedule").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -69,8 +65,7 @@ public class ScoreActivity extends AppCompatActivity {
                                             String id = dataSnapshot1.child("id").getValue().toString();
                                             String sid = dataSnapshot1.child("sid").getValue().toString();
                                             if (!id.equals(null)) {
-                                                dref.child("FinishMatches").child(sid).child("note").setValue(matchNote);
-                                                dref.child("FinishMatches").child(sid).child("id").setValue(sid);
+                                                dref.child("Schedule").child(id).child("note").setValue(matchnn);
                                             }
                                         }
                                     }
@@ -83,6 +78,39 @@ public class ScoreActivity extends AppCompatActivity {
                             }
                         });
                     }
+                    catch (Exception e){}
+                    Integer tossWinTeam = responseObject.getInt("toss_won_team_id");
+                    String elected = responseObject.getString("elected");
+                    try {
+                        String matchStatus = responseObject.getString("status");
+                        if (matchStatus.equals("Finished")) {
+                            final String matchNote = responseObject.getString("note");
+                            dref.child("Schedule").addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                            if (dataSnapshot1.child("status").getValue().toString().equals("Live")) {
+                                                String id = dataSnapshot1.child("id").getValue().toString();
+                                                String sid = dataSnapshot1.child("sid").getValue().toString();
+                                                if (!id.equals(null)) {
+                                                    dref.child("FinishMatches").child(sid).child("note").setValue(matchNote);
+                                                    dref.child("FinishMatches").child(sid).child("id").setValue(sid);
+                                                    dref.child("Schedule").child(id).child("note").setValue(matchNote);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
+                    catch (Exception e){}
                     dref.child("LiveScore").child("tosswin").setValue(tossWinTeam);
                     dref.child("LiveScore").child("elected").setValue(elected);
                     // JSONObject rankObject = responseObject.getJSONObject("scoreboards");
@@ -98,6 +126,86 @@ public class ScoreActivity extends AppCompatActivity {
                             Float s = Float.parseFloat(odisObject.getJSONObject(i).getString("total"));
                             Float o = Float.parseFloat(odisObject.getJSONObject(i).getString("overs"));
                             if (i == 1) {
+                                score.setText(scoret);
+                                over.setText(overt);
+                                wicket.setText(wickett);
+                                if (!String.valueOf(s / o).equals("NaN"))
+                                    rr.setText(String.valueOf(s / o));
+                                else
+                                    rr2.setText("0");
+                                if (teamid.equals("51")) {
+                                    team.setText("Islamabad United");
+                                    dref.child("LiveScore").child("Islamabad United").child("score").setValue(scoret);
+                                    dref.child("LiveScore").child("Islamabad United").child("wicket").setValue(wickett);
+                                    dref.child("LiveScore").child("Islamabad United").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Islamabad United").child("team").setValue("Islamabad United");
+                                    if (!String.valueOf(s / o).equals("NaN"))
+                                        dref.child("LiveScore").child("Islamabad United").child("rr").setValue(String.valueOf(s / o));
+                                    else
+                                        dref.child("LiveScore").child("Islamabad United").child("rr").setValue("0");
+                                }
+                                if (teamid.equals("12")) {
+                                    team.setText("Karachi Kings");
+                                    dref.child("LiveScore").child("Karachi Kings").child("score").setValue(scoret);
+                                    dref.child("LiveScore").child("Karachi Kings").child("wicket").setValue(wickett);
+                                    dref.child("LiveScore").child("Karachi Kings").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Karachi Kings").child("team").setValue("Karachi Kings");
+                                    if (!String.valueOf(s / o).equals("NaN"))
+                                        dref.child("LiveScore").child("Karachi Kings").child("rr").setValue(String.valueOf(s / o));
+                                    else
+                                        dref.child("LiveScore").child("Karachi Kings").child("rr").setValue("0");
+
+                                }
+                                if (teamid.equals("13")) {
+                                    team.setText("Lahore Qalandars");
+                                    dref.child("LiveScore").child("Lahore Qalandars").child("score").setValue(scoret);
+                                    dref.child("LiveScore").child("Lahore Qalandars").child("wicket").setValue(wickett);
+                                    dref.child("LiveScore").child("Lahore Qalandars").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Lahore Qalandars").child("team").setValue("Lahore Qalandars");
+                                    if (!String.valueOf(s / o).equals("NaN"))
+                                        dref.child("LiveScore").child("Lahore Qalandars").child("rr").setValue(String.valueOf(s / o));
+                                    else
+                                        dref.child("LiveScore").child("Lahore Qalandars").child("rr").setValue("0");
+
+                                }
+                                if (teamid.equals("14")) {
+                                    team.setText("Multan Sultan");
+                                    dref.child("LiveScore").child("Multan Sultan").child("score").setValue(scoret);
+                                    dref.child("LiveScore").child("Multan Sultan").child("wicket").setValue(wickett);
+                                    dref.child("LiveScore").child("Multan Sultan").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Multan Sultan").child("team").setValue("Multan Sultan");
+                                    if (!String.valueOf(s / o).equals("NaN"))
+                                        dref.child("LiveScore").child("Multan Sultan").child("rr").setValue(String.valueOf(s / o));
+                                    else
+                                        dref.child("LiveScore").child("Multan Sultan").child("rr").setValue("0");
+
+                                }
+                                if (teamid.equals("15")) {
+                                    team.setText("Peshawar Zalmi");
+                                    dref.child("LiveScore").child("Peshawar Zalmi").child("score").setValue(scoret);
+                                    dref.child("LiveScore").child("Peshawar Zalmi").child("wicket").setValue(wickett);
+                                    dref.child("LiveScore").child("Peshawar Zalmi").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Peshawar Zalmi").child("team").setValue("Peshawar Zalmi");
+                                    if (!String.valueOf(s / o).equals("NaN"))
+                                        dref.child("LiveScore").child("Peshawar Zalmi").child("rr").setValue(String.valueOf(s / o));
+                                    else
+                                        dref.child("LiveScore").child("Peshawar Zalmi").child("rr").setValue(String.valueOf(s / o));
+
+                                }
+                                if (teamid.equals("53")) {
+                                    team.setText("Quetta Gladiators");
+                                    dref.child("LiveScore").child("Quetta Gladiators").child("score").setValue(scoret);
+                                    dref.child("LiveScore").child("Quetta Gladiators").child("wicket").setValue(wickett);
+                                    dref.child("LiveScore").child("Quetta Gladiators").child("over").setValue(overt);
+                                    dref.child("LiveScore").child("Quetta Gladiators").child("team").setValue("Quetta Gladiators");
+                                    if (!String.valueOf(s / o).equals("NaN"))
+                                        dref.child("LiveScore").child("Quetta Gladiators").child("rr").setValue(String.valueOf(s / o));
+                                    else
+                                        dref.child("LiveScore").child("Quetta Gladiators").child("rr").setValue("0");
+
+                                }
+                            }
+                            if (i == 3) {
                                 score2.setText(scoret);
                                 over2.setText(overt);
                                 wicket2.setText(wickett);
@@ -195,15 +303,17 @@ public class ScoreActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Error " + error.toString(), Toast.LENGTH_LONG).show();
             }
         });
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+        } catch (Exception e) {
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 recreate();
             }
-        }, 7000);
+        }, 2000);
 
 
     }
@@ -344,8 +454,12 @@ public class ScoreActivity extends AppCompatActivity {
                         name = "4 ";
                     } else if (name.contains("SIX")) {
                         name = "6 ";
+                    } else if (name.contains("Leg Byes")) {
+                        name = name.replace(" Leg Byes", "L ");
                     } else if (name.contains("Leg Bye")) {
                         name = name.replace(" Leg Bye", "L ");
+                    } else if (name.contains("Byes")) {
+                        name = name.replace(" Byes", "B ");
                     } else if (name.contains("Bye")) {
                         name = name.replace(" Bye", "B ");
                     } else if (name.contains("No Ball")) {
@@ -368,49 +482,6 @@ public class ScoreActivity extends AppCompatActivity {
         }
 
     }
-//    private void getPlayer(final String player1Id, final int x,final String player2Id,final int y,final String currentBattingPLayer) {
-//        String playerUrl = "https://cricket.sportmonks.com/api/v2.0/players/?api_token=9ivr14EK7LFO5sg5SSQLg7Fby8NHWL8vJ8MkzsHgm0Y5WvFblbMubiYRlVZf";
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, playerUrl, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                JSONObject responseObject = null;
-//                try {
-//                    responseObject = new JSONObject(response);
-//                    JSONArray dataObject = new JSONObject(String.valueOf(responseObject)).getJSONArray("data");
-//                    for (int j = 0; j < dataObject.length(); j++) {
-//                            if(player1Id.equals(dataObject.getJSONObject(j).getInt("id"))){
-//                                String player1Name = dataObject.getJSONObject(j).getString("fullname");
-//                                dref.child("LiveScore").child("batsmanScore").child(String.valueOf(x)).child("name").setValue(player1Name);
-//
-//                            }
-//                             if(player2Id.equals(dataObject.getJSONObject(j).getInt("id"))){
-//                            String player2Name = dataObject.getJSONObject(j).getString("fullname");
-//                                 dref.child("LiveScore").child("batsmanScore").child(String.valueOf(y)).child("name").setValue(player2Name);
-//
-//                             }
-//                        if(currentBattingPLayer.equals(dataObject.getJSONObject(j).getInt("id"))){
-//                            String currentPlayerName = dataObject.getJSONObject(j).getString("fullname");
-//                            dref.child("LiveScore").child("currentBatting").setValue(currentPlayerName);
-//
-//                        }
-//
-//                    }
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                    Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        });
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        requestQueue.add(stringRequest);
-//
-//    }
 
     private void getPlayerData(final String id, final int x, final String team, final String score, final String balls, final String fours, final String sixs, final String rr) {
         try {
@@ -467,4 +538,6 @@ public class ScoreActivity extends AppCompatActivity {
 
 
     }
+
+
 }
