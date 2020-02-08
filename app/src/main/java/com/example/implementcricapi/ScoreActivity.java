@@ -28,7 +28,7 @@ import org.json.JSONObject;
 public class ScoreActivity extends AppCompatActivity {
     TextView score, over, rr, wicket, team;
     TextView score2, over2, rr2, wicket2, team2;
-    String Url = "https://cricket.sportmonks.com/api/v2.0/fixtures/15081?api_token=9ivr14EK7LFO5sg5SSQLg7Fby8NHWL8vJ8MkzsHgm0Y5WvFblbMubiYRlVZf&include=scoreboards,localTeam,visitorTeam,batting,bowling,balls,lineup";
+    String Url = "https://cricket.sportmonks.com/api/v2.0/fixtures/15102?api_token=9ivr14EK7LFO5sg5SSQLg7Fby8NHWL8vJ8MkzsHgm0Y5WvFblbMubiYRlVZf&include=scoreboards,localTeam,visitorTeam,batting,bowling,balls,lineup";
     DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -164,7 +164,7 @@ public class ScoreActivity extends AppCompatActivity {
                                         dref.child("LiveScore").child("Peshawar Zalmi").child("rr").setValue(String.valueOf(s / o));
 
                                 }
-                                if (teamid.equals("54")) {
+                                if (teamid.equals("53")) {
                                     team2.setText("Quetta Gladiators");
                                     dref.child("LiveScore").child("Quetta Gladiators").child("score").setValue(scoret);
                                     dref.child("LiveScore").child("Quetta Gladiators").child("wicket").setValue(wickett);
@@ -203,7 +203,7 @@ public class ScoreActivity extends AppCompatActivity {
             public void run() {
                 recreate();
             }
-        }, 7500);
+        }, 7000);
 
 
     }
@@ -232,7 +232,7 @@ public class ScoreActivity extends AppCompatActivity {
                 teamname = "Multan Sultan";
             } else if (teamId.equals("15")) {
                 teamname = "Peshawar Zalmi";
-            } else if (teamId.equals("54")) {
+            } else if (teamId.equals("53")) {
                 teamname = "Quetta Gladiators";
             }
             //JSONObject battingObject=dataObject.getJSONObject("batting");
@@ -299,7 +299,7 @@ public class ScoreActivity extends AppCompatActivity {
                         bowlerTeamName = "Multan Sultan";
                     } else if (bowler_team_id.equals("15")) {
                         bowlerTeamName = "Peshawar Zalmi";
-                    } else if (bowler_team_id.equals("54")) {
+                    } else if (bowler_team_id.equals("53")) {
                         bowlerTeamName = "Quetta Gladiators";
                     }
                     if (bowler_player_id.equals(bowlerId)) {
