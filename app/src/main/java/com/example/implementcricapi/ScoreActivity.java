@@ -3,8 +3,11 @@ package com.example.implementcricapi;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,32 +29,47 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Locale;
+
 public class ScoreActivity extends AppCompatActivity {
     TextView score, over, rr, wicket, team, textNmbr;
     TextView score2, over2, rr2, wicket2, team2;
-    String Url = "https://cricket.sportmonks.com/api/v2.0/fixtures/14772?api_token=9ivr14EK7LFO5sg5SSQLg7Fby8NHWL8vJ8MkzsHgm0Y5WvFblbMubiYRlVZf&include=scoreboards,localTeam,visitorTeam,batting,bowling,balls,lineup";
+    String Url = "https://cricket.sportmonks.com/api/v2.0/fixtures/14775?api_token=9ivr14EK7LFO5sg5SSQLg7Fby8NHWL8vJ8MkzsHgm0Y5WvFblbMubiYRlVZf&include=scoreboards,localTeam,visitorTeam,batting,bowling,balls,lineup";
     DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
     StringRequest stringRequest;
     RequestQueue requestQueue;
+    Integer i = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
-        function();
+        TextToSpeech tts=new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status==TextToSpeech.SUCCESS){
+
+                }
+            }
+        });
+        function(tts);
 
 
 
     }
 
-    private void function() {
+    private void function(final TextToSpeech tts) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                function();
+                function(tts);
 
             }
         }, 2500);
         textNmbr=(TextView) findViewById(R.id.nmbr);
+        textNmbr.setText(String.valueOf(i));
+        tts.setLanguage(Locale.US);
+        tts.speak(i.toString(), TextToSpeech.QUEUE_ADD, null);
+        i++;
         score = findViewById(R.id.txtScore);
         over = findViewById(R.id.txtOver);
         wicket = findViewById(R.id.txtWicket);
@@ -82,7 +100,7 @@ public class ScoreActivity extends AppCompatActivity {
                                             String id = dataSnapshot1.child("id").getValue().toString();
                                             String sid = dataSnapshot1.child("sid").getValue().toString();
                                             if (!id.equals(null)) {
-                                                dref.child("Schedule").child(id).child("note").setValue(matchnn);
+                                                //dref.child("Schedule").child(id).child("note").setValue(matchnn);
                                             }
                                         }
                                     }
