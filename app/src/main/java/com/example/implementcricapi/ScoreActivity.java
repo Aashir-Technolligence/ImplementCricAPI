@@ -51,6 +51,7 @@ public class ScoreActivity extends AppCompatActivity {
                 }
             }
         });
+        tts.setLanguage(Locale.US);
         function(tts);
 
 
@@ -67,7 +68,6 @@ public class ScoreActivity extends AppCompatActivity {
         }, 2500);
         textNmbr=(TextView) findViewById(R.id.nmbr);
         textNmbr.setText(String.valueOf(i));
-        tts.setLanguage(Locale.US);
         tts.speak(i.toString(), TextToSpeech.QUEUE_ADD, null);
         i++;
         score = findViewById(R.id.txtScore);
